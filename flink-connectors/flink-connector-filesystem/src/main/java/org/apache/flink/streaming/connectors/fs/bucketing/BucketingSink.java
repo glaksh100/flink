@@ -87,9 +87,11 @@ import java.util.UUID;
  * and a rolling counter. For example the file {@code "part-1-17"} contains the data from
  * {@code subtask 1} of the sink and is the {@code 17th} bucket created by that subtask. Per default
  * the part prefix is {@code "part"} but this can be configured using {@link #setPartPrefix(String)}.
- * When a part file becomes bigger than the user-specified batch size the current part file is closed,
- * the part counter is increased and a new part file is created. The batch size defaults to {@code 384MB},
- * this can be configured using {@link #setBatchSize(long)}.
+ * When a part file becomes bigger than the user-specified batch size or when the part file becomes older
+ * than the user-specified roll over interval the current part file is closed,the part counter is increased
+ * and a new part file is created. The batch size defaults to {@code 384MB},this can be configured
+ * using {@link #setBatchSize(long)}. The roll over interval defaults to {@code Long.MAX_VALUE} and
+ * this can be configured using {@link #setBatchRolloverInterval(long)}.
  *
  *
  * <p>In some scenarios, the open buckets are required to change based on time. In these cases, the sink
@@ -239,7 +241,7 @@ public class BucketingSink<T>
 	private static final long DEFAULT_ASYNC_TIMEOUT_MS = 60 * 1000;
 
 	/**
-	 * The default time interval at which part files are written to the filesystem
+	 * The default time interval at which part files are written to the filesystem.
 	 */
 	private static final long DEFAULT_BATCH_ROLLOVER_INTERVAL = Long.MAX_VALUE;
 
